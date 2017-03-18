@@ -22,7 +22,6 @@ logging.basicConfig(filename='iborrow_log.txt',format='[%(asctime)s] %(message)s
 
 Base = declarative_base()
 
-
 class stock_loan(Base):
     __tablename__ = TABLE_NAME
     
@@ -80,19 +79,14 @@ class ftp_with_retries(FTP):
         FTP.__init__(*args, **kw)
 
 
-        
-
 class Borrow:
-      
-    
+
     @timer
     def __init__(self,engine,country_list=['australia', 'austria', 'belgium', 'british', 'canada',
                              'dutch', 'france', 'germany', 'hongkong', 'india', 'italy',
                              'japan', 'mexico', 'spain', 'swedish', 'swiss', 'usa']):
 
-        
         self.engine = engine
-
         self.country_list = country_list
         
     def get_records(self, country_list):
@@ -103,11 +97,7 @@ class Borrow:
     @timer    
     def update(self):
         self.records = self._download_files(self.country_list)
-        
-        
         self.bulk_insert()
-
-        
         msg = 'Update Successful'
         print msg
         logging.info(msg)
@@ -117,7 +107,6 @@ class Borrow:
         
         rows = []
      
-            
         #parse timestamp
         timestamp_row = fh.readline().split('|')
         date_str = timestamp_row[1]
@@ -159,9 +148,7 @@ class Borrow:
                 allRecords += self._parse_file(temp_curr,country)
                 
         return allRecords
-                
-
-    
+               
     @timer
     def bulk_insert(self):
         self.engine.execute(
