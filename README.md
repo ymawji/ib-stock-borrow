@@ -1,2 +1,2 @@
-# ib-stock-borrow
-Download and parse Interactive Brokers stock borrow data
+# IB Stock Borrow
+Download Interactive Brokers stock borrow data and write it to a database
