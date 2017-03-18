@@ -18,9 +18,29 @@ from functools import wraps
 TABLE_NAME='stock_loan'
 MAX_FTP_RETRIES = 10
 
-
 logging.basicConfig(filename='iborrow_log.txt',format='[%(asctime)s] %(message)s',level=logging.INFO)
 
+Base = declarative_base()
+
+
+class stock_loan(Base):
+    __tablename__ = TABLE_NAME
+    
+    id = Column(Integer,primary_key=True)
+    symbol = Column(String)
+    timestamp = Column(DateTime)
+    country = Column(String)
+    currency = Column(String(3))
+    isin = Column(String(12))
+    name = Column(String(200))
+    feerate = Column(Numeric)
+    rebaterate = Column(Numeric)
+    available = Column(BigInteger)
+    
+    def __repr__(self):
+        return "<%s(symbol='%s', timestamp='%s', country='%s', currency='%s', isin='%s', name='%s', feeRate='%s', rebateRate='%s', available='%s')>" % (TABLE_NAME,
+        self.symbol, self.timestamp, self.country, self.currency, self.isin, self.name, self.feerate, self.rebaterate, self.available)
+    
 
 def timer(f):
     @wraps(f)
@@ -61,30 +81,6 @@ class ftp_with_retries(FTP):
 
 
         
-
-        
-
-Base = declarative_base()
-
-
-class stock_loan(Base):
-    __tablename__ = TABLE_NAME
-    
-    id = Column(Integer,primary_key=True)
-    symbol = Column(String)
-    timestamp = Column(DateTime)
-    country = Column(String)
-    currency = Column(String(3))
-    isin = Column(String(12))
-    name = Column(String(200))
-    feerate = Column(Numeric)
-    rebaterate = Column(Numeric)
-    available = Column(BigInteger)
-    
-    def __repr__(self):
-        return "<%s(symbol='%s', timestamp='%s', country='%s', currency='%s', isin='%s', name='%s', feeRate='%s', rebateRate='%s', available='%s')>" % (TABLE_NAME,
-        self.symbol, self.timestamp, self.country, self.currency, self.isin, self.name, self.feerate, self.rebaterate, self.available)
-    
 
 class Borrow:
       
@@ -159,7 +155,7 @@ class Borrow:
                 conn_ftp.retrbinary('RETR %s' % path, temp_curr.write)
                 temp_curr.seek(0,0)
                 
-                #parse file and add to session
+                #parse file and add to list
                 allRecords += self._parse_file(temp_curr,country)
                 
         return allRecords
