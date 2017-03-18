@@ -35,10 +35,7 @@ class stock_loan(Base):
     feerate = Column(Numeric)
     rebaterate = Column(Numeric)
     available = Column(BigInteger)
-    
-    def __repr__(self):
-        return "<%s(symbol='%s', timestamp='%s', country='%s', currency='%s', isin='%s', name='%s', feeRate='%s', rebateRate='%s', available='%s')>" % (TABLE_NAME,
-        self.symbol, self.timestamp, self.country, self.currency, self.isin, self.name, self.feerate, self.rebaterate, self.available)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
     
 
 def timer(f):
